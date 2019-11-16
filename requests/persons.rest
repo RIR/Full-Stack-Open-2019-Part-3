@@ -18,5 +18,17 @@ DELETE http://localhost:3001/api/persons/1
 
 ###
 
+// Post new person
+POST http://localhost:3001/api/persons HTTP/1.1
+content-type: application/json
+
+{
+    "name": "Uusi henkilö",
+    "number": "123-456798765"
+}
+
+
+###
+
 // Get info
 GET http://localhost:3001/info

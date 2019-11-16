@@ -22,6 +22,43 @@ let persons = [
   }
 ];
 
+const generateId = max => Math.floor(Math.random() * Math.floor(max));
+const isAlreadyListed = name => !!persons.find(person => person.name === name);
+
+app.post('/api/persons', (request, response) => {
+  const {
+    body: { name, number }
+  } = request;
+
+  if (!name) {
+    return response.status(400).json({
+      error: 'name missing'
+    });
+  }
+
+  if (!number) {
+    return response.status(400).json({
+      error: 'number missing'
+    });
+  }
+
+  if (isAlreadyListed(name)) {
+    return response.status(400).json({
+      error: 'name must be unique'
+    });
+  }
+
+  const person = {
+    name,
+    number,
+    id: generateId(10000)
+  };
+
+  persons = persons.concat(person);
+
+  response.json(person);
+});
+
 app.get('/api/persons', (req, res) => {
   res.json(persons);
 });
