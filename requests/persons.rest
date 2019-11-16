@@ -1,9 +1,17 @@
 // Get all persons
-
 GET http://localhost:3001/api/persons
 
 ###
 
-// Get info
+// Get single person with id 1
+GET http://localhost:3001/api/persons/1
 
+###
+
+// Get single person with (non-existing) id 100
+GET http://localhost:3001/api/persons/100
+
+###
+
+// Get info
 GET http://localhost:3001/info
