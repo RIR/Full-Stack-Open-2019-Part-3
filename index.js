@@ -1,6 +1,6 @@
-const express = require('express')
-const app = express()
-const bodyParser = require('body-parser')
+const express = require('express');
+const app = express();
+const bodyParser = require('body-parser');
 
 app.use(bodyParser.json());
 
@@ -23,10 +23,18 @@ let persons = [
 ];
 
 app.get('/api/persons', (req, res) => {
-  res.json(persons)
-})
+  res.json(persons);
+});
 
-const PORT = 3001
+app.get('/info', (req, res) => {
+  const status = `
+  Phonebook has info for ${persons.length} people
+  ${new Date()}
+  `;
+  res.send(status);
+});
+
+const PORT = 3001;
 app.listen(PORT, () => {
-  console.log(`Server running on port ${PORT}`)
-})
+  console.log(`Server running on port ${PORT}`);
+});
