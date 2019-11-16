@@ -13,5 +13,10 @@ GET http://localhost:3001/api/persons/100
 
 ###
 
+// Delete a person with id 1
+DELETE http://localhost:3001/api/persons/1
+
+###
+
 // Get info
 GET http://localhost:3001/info
