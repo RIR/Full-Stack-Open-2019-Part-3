@@ -1,0 +1,28 @@
+{
+  "name": "phonebook-backend",
+  "version": "1.0.0",
+  "description": "Backend for phonebook app",
+  "main": "index.js",
+  "scripts": {
+    "start": "node index.js",
+    "watch": "nodemon index.js",
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/RIR/Full-Stack-Open-2019-Part-3.git"
+  },
+  "author": "Raine Rantanen",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/RIR/Full-Stack-Open-2019-Part-3/issues"
+  },
+  "homepage": "https://github.com/RIR/Full-Stack-Open-2019-Part-3#readme",
+  "dependencies": {
+    "body-parser": "^1.19.0",
+    "express": "^4.17.1"
+  },
+  "devDependencies": {
+    "nodemon": "^1.19.4"
+  }
+}
