@@ -1,25 +1,26 @@
+@hostname = http://localhost
+@port = 3001
+@host = {{hostname}}:{{port}}
+
+###
 // Get all persons
-GET http://localhost:3001/api/persons
+GET {{host}}/api/persons
 
 ###
-
 // Get single person with id 1
-GET http://localhost:3001/api/persons/1
+GET {{host}}/api/persons/1
 
 ###
-
 // Get single person with (non-existing) id 100
-GET http://localhost:3001/api/persons/100
+GET {{host}}/api/persons/100
 
 ###
-
 // Delete a person with id 1
-DELETE http://localhost:3001/api/persons/1
+DELETE {{host}}/api/persons/1
 
 ###
-
 // Post new person
-POST http://localhost:3001/api/persons HTTP/1.1
+POST {{host}}/api/persons HTTP/1.1
 content-type: application/json
 
 {
@@ -27,8 +28,6 @@ content-type: application/json
     "number": "123-456798765"
 }
 
-
 ###
-
 // Get info
-GET http://localhost:3001/info
+GET {{host}}/info

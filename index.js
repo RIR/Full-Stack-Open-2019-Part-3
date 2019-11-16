@@ -1,8 +1,24 @@
 const express = require('express');
 const app = express();
 const bodyParser = require('body-parser');
+const morgan = require('morgan');
+
+const customLogger = morgan((tokens, req, res) => {
+  const tinyLog = [
+    tokens.method(req, res),
+    tokens.url(req, res),
+    tokens.status(req, res),
+    tokens.res(req, res, 'content-length'),
+    '-',
+    tokens['response-time'](req, res),
+    'ms'
+  ].join(' ');
+
+  return req.method === 'POST' ? `${tinyLog} ${JSON.stringify(req.body)}` : tinyLog;
+});
 
 app.use(bodyParser.json());
+app.use(customLogger);
 
 let persons = [
   {
