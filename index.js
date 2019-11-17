@@ -2,6 +2,7 @@ const express = require('express');
 const app = express();
 const bodyParser = require('body-parser');
 const morgan = require('morgan');
+const cors = require('cors')
 
 const customLogger = morgan((tokens, req, res) => {
   const tinyLog = [
@@ -17,6 +18,7 @@ const customLogger = morgan((tokens, req, res) => {
   return req.method === 'POST' ? `${tinyLog} ${JSON.stringify(req.body)}` : tinyLog;
 });
 
+app.use(cors());
 app.use(bodyParser.json());
 app.use(customLogger);
 
@@ -108,7 +110,7 @@ app.get('/info', (req, res) => {
   res.send(status);
 });
 
-const PORT = 3001;
+const PORT = process.env.PORT || 3001;
 app.listen(PORT, () => {
   console.log(`Server running on port ${PORT}`);
 });
