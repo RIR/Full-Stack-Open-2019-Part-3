@@ -2,7 +2,7 @@ const express = require('express');
 const app = express();
 const bodyParser = require('body-parser');
 const morgan = require('morgan');
-const cors = require('cors')
+const cors = require('cors');
 
 const customLogger = morgan((tokens, req, res) => {
   const tinyLog = [
@@ -19,6 +19,7 @@ const customLogger = morgan((tokens, req, res) => {
 });
 
 app.use(cors());
+app.use(express.static('build'));
 app.use(bodyParser.json());
 app.use(customLogger);
 
@@ -42,6 +43,8 @@ let persons = [
 
 const generateId = max => Math.floor(Math.random() * Math.floor(max));
 const isAlreadyListed = name => !!persons.find(person => person.name === name);
+
+// Persons routes
 
 app.post('/api/persons', (request, response) => {
   const {
@@ -102,6 +105,7 @@ app.delete('/api/persons/:id', (req, res) => {
   res.status(204).end();
 });
 
+// Info route
 app.get('/info', (req, res) => {
   const status = `
   Phonebook has info for ${persons.length} people
