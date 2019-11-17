@@ -1,8 +1,11 @@
+require('dotenv').config();
 const express = require('express');
 const app = express();
 const bodyParser = require('body-parser');
 const morgan = require('morgan');
 const cors = require('cors');
+
+const Person = require('./models/person');
 
 const customLogger = morgan((tokens, req, res) => {
   const tinyLog = [
@@ -23,33 +26,15 @@ app.use(express.static('build'));
 app.use(bodyParser.json());
 app.use(customLogger);
 
-let persons = [
-  {
-    name: 'Arto Hellas',
-    number: '040-123456',
-    id: 1
-  },
-  {
-    name: 'Dan Abramov',
-    number: '040-345678',
-    id: 2
-  },
-  {
-    name: 'Random Guy',
-    number: '040-987654',
-    id: 3
-  }
-];
-
-const generateId = max => Math.floor(Math.random() * Math.floor(max));
-const isAlreadyListed = name => !!persons.find(person => person.name === name);
+// const generateId = max => Math.floor(Math.random() * Math.floor(max));
+// const isAlreadyListed = name => !!persons.find(person => person.name === name);
 
 // Persons routes
-
-app.post('/api/persons', (request, response) => {
+app.post('/api/persons', (req, res) => {
   const {
     body: { name, number }
-  } = request;
+  } = req;
+  const body = req.body;
 
   if (!name) {
     return response.status(400).json({
@@ -63,40 +48,78 @@ app.post('/api/persons', (request, response) => {
     });
   }
 
-  if (isAlreadyListed(name)) {
-    return response.status(400).json({
-      error: 'name must be unique'
-    });
-  }
+  const person = new Person({ name, number });
 
-  const person = {
-    name,
-    number,
-    id: generateId(10000)
-  };
-
-  persons = persons.concat(person);
-
-  response.json(person);
+  person.save().then(savedPerson => {
+    res.json(savedPerson.toJSON());
+  });
 });
+
+// app.post('/api/persons', (request, response) => {
+//   const {
+//     body: { name, number }
+//   } = request;
+
+//   if (!name) {
+//     return response.status(400).json({
+//       error: 'name missing'
+//     });
+//   }
+
+//   if (!number) {
+//     return response.status(400).json({
+//       error: 'number missing'
+//     });
+//   }
+
+//   if (isAlreadyListed(name)) {
+//     return response.status(400).json({
+//       error: 'name must be unique'
+//     });
+//   }
+
+//   const person = {
+//     name,
+//     number,
+//     id: generateId(10000)
+//   };
+
+//   persons = persons.concat(person);
+
+//   response.json(person);
+// });
 
 app.get('/api/persons', (req, res) => {
-  res.json(persons);
+  Person.find({}).then(persons => {
+    res.json(persons);
+  });
 });
+// app.get('/api/persons', (req, res) => {
+//   res.json(persons);
+// });
 
 app.get('/api/persons/:id', (req, res) => {
-  const id = Number(req.params.id);
-
-  const person = persons.find(person => person.id === id);
-
-  if (person) {
-    res.json(person);
-  } else {
-    res.status(404).end();
-  }
-
-  res.json(person);
+  Note.findById(req.params.id).then(person => {
+    if (person) {
+      res.json(person.toJSON());
+    } else {
+      res.status(404).end();
+    }
+  });
 });
+// app.get('/api/persons/:id', (req, res) => {
+//   const id = Number(req.params.id);
+
+//   const person = persons.find(person => person.id === id);
+
+//   if (person) {
+//     res.json(person);
+//   } else {
+//     res.status(404).end();
+//   }
+
+//   res.json(person);
+// });
 
 app.delete('/api/persons/:id', (req, res) => {
   const id = Number(req.params.id);
@@ -114,7 +137,7 @@ app.get('/info', (req, res) => {
   res.send(status);
 });
 
-const PORT = process.env.PORT || 3001;
+const PORT = process.env.PORT;
 app.listen(PORT, () => {
   console.log(`Server running on port ${PORT}`);
 });

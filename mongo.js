@@ -1,3 +1,4 @@
+require('dotenv').config();
 const mongoose = require('mongoose');
 
 if (process.argv.length < 3) {
@@ -7,7 +8,7 @@ if (process.argv.length < 3) {
 
 const [password, name, number] = process.argv.slice(2);
 
-const url = `mongodb+srv://fullstack:${password}@cluster0-bwixb.mongodb.net/phonebook?retryWrites=true&w=majority`;
+const url = process.env.DB_URI;
 
 mongoose.connect(url, { useNewUrlParser: true });
 
