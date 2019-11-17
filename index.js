@@ -18,8 +18,8 @@ const customLogger = morgan((tokens, req, res) => {
   return req.method === 'POST' ? `${tinyLog} ${JSON.stringify(req.body)}` : tinyLog;
 });
 
-app.use(express.static('build'));
 app.use(cors());
+app.use(express.static('build'));
 app.use(bodyParser.json());
 app.use(customLogger);
 
