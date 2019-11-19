@@ -30,7 +30,7 @@ const PERSON_NOT_FOUND = { error: 'person not found' };
 // ### Routes
 
 // Persons routes
-app.get('/api/persons', (req, res) => {
+app.get('/api/persons', (req, res, next) => {
   Person.find({})
     .then(persons => {
       res.json(persons);
@@ -86,14 +86,14 @@ app.put('/api/persons/:id', (req, res, next) => {
 
 app.delete('/api/persons/:id', (req, res, next) => {
   Person.findByIdAndRemove(req.params.id)
-    .then(result => {
+    .then(() => {
       res.status(204).end();
     })
     .catch(error => next(error));
 });
 
 // Info route
-app.get('/info', (req, res) => {
+app.get('/info', (req, res, next) => {
   Person.count({})
     .then(result => {
       const status = `
@@ -119,7 +119,7 @@ const errorHandler = (error, req, res, next) => {
   const { message, name, kind } = error;
   console.error(message);
 
-  if (name === 'CastError' && kind == 'ObjectId') {
+  if (name === 'CastError' && kind === 'ObjectId') {
     return res.status(400).send({ error: 'malformatted id' });
   } else if (name === 'ValidationError') {
     return res.status(400).json({ error: message });
